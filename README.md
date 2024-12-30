@@ -2,11 +2,33 @@
 
 ## Project Background
 
-[Please add project background]
+US historical election results can be found in a set of PDF documents [at this link](https://history.house.gov/Institution/Election-Statistics/Election-Statistics/) though there is no comprehensive results repository in a machine readable format.
+
+The purpose of this project is to test modern tools on this data to create a comprehensive results repository. Specifically we wish to test Claude and OpenAI's APIs on this image data to build a dataset. If there are other API based systems for testing than they can be added to the list.
 
 ## Project Goals
 
-[Please add project background]
+The following are project goals:
+1. Write code which analyzes, parses and OCRs the images from the 1920-1998. This should 
+2. Once the images are in table format, checking should be done to verify that integrity of the data. Specifically:
+   1. There are totals in many of the datasets. These can be used as checksums to verify the scanning was accurate.
+   2. Numbers should also have guardrails on them. For example, all vote totals should be integers. 
+   3. Other tests and checks should be developed by the group working on this project.
+3. The outcome should be a set of _standard_ csv files. The data definition of this should look something like:
+
+```sql
+state char(2),
+year int,
+race_type varchar(12),
+congressional_district int,
+candidate_name varchar(100),
+candidate_party varchar(100),
+votes int
+```
+
+Where `race_type` should be Senate, HR or Presidential (if there are others listed they should be included). `congressional_district` should only exist when appropriate. 
+
+4. Finally the scripts need to run from top-to-bottom to generate the results. This should _not_ be a set of jupyter notebooks, but a set of python scripts.
 
 ## Usage
 
