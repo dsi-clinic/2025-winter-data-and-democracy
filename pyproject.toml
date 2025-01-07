@@ -15,7 +15,6 @@ extend-select = [
   # by default, ruff enables all F and a subset of E rules
   # for a description of rulesets and examples, see:
   # https://docs.astral.sh/ruff/rules/
-  "ANN",    # flake8-annotations - type annotations, some ignored
   "B",      # bugbear - identifies likely bugs
   "C4",     # flake8-comprehensions - identifies redundant calls in comprehensions
   "D",      # pydocstyle - requires docstrings on all public modules/functions/classes
@@ -34,8 +33,6 @@ extend-select = [
 
 ignore = [
   "D415",   # allow first line of doctstrings to end without punctuation
-  "ANN002", # missing type on *args
-  "ANN003", # missing type on **kwargs
   "B905"    # won't work on python <3.10
 ]
 
