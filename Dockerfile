@@ -21,7 +21,4 @@ USER $NB_UID
 # Install Python 3 packages
 RUN pip install --no-cache-dir -r requirements.txt
 
-# install project as an editable package
-RUN pip install -e .
-
 CMD ["/bin/bash"]
