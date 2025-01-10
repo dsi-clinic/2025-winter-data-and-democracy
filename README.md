@@ -26,9 +26,17 @@ candidate_party varchar(100),
 votes int
 ```
 
-Where `race_type` should be Senate, HR or Presidential (if there are others listed they should be included). `congressional_district` should only exist when appropriate. 
+Where `race_type` should be Senate, HR or Presidential (if there are others listed they should be included). `congressional_district` should only exist when appropriate. Note that there may need to be additional information added to the schema, the purpose of this is to give you a sense of what the schema should roughly look lke.
 
 4. Finally the scripts need to run from top-to-bottom to generate the results. This should _not_ be a set of jupyter notebooks, but a set of python scripts.
+
+## Tasks for the first week
+
+To complete this task we will need a few different pieces of code:
+
+1. Python functions which download the pdf files and put them into a temp directory (such as /data/temp). Note that they should _not_ be committed into the repo as they are quite large, they should be downloaded
+2. Read over the PDF documents.
+3. Become familiar with the claude API and figure out how to send images to it. You have a claude API key in the slack channel (this should _NOT_ be committed to the repo. If the API Key ends up in the repo it will negatively impact your entire team's grade).
 
 ## Usage
 
