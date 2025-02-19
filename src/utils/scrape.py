@@ -21,7 +21,7 @@ def scrape_pdfs(url: str) -> None:
     
     # Set up Chrome options
     chrome_options = Options()
-    download_dir = "./output/scraped_pdfs"
+    download_dir = "././data/scraped_pdfs"
     chrome_options.add_experimental_option("prefs", {
         "download.default_directory": download_dir,
         "download.prompt_for_download": False,
