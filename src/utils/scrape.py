@@ -5,6 +5,7 @@ import requests
 import os
 import re
 from typing import List
+from urllib.parse import urlparse
 
 def scrape_pdfs(url: str) -> None:
     """
@@ -35,25 +36,18 @@ def scrape_pdfs(url: str) -> None:
     
     # Find all the table rows
     rows = driver.find_elements(By.CSS_SELECTOR, "table tr")
-    pdf_links: List[str] = []
+    pdf_links = []
     
     for row in rows[1:]:  # Skip the header row
         cells = row.find_elements(By.TAG_NAME, "td")
         for cell in cells:
-            try:
-                link = cell.find_element(By.TAG_NAME, "a")
-                href = link.get_attribute("href")
-                if href.endswith(".pdf"):
-                    pdf_links.append(href)
-            except:
-                continue
+            link = cell.find_element(By.TAG_NAME, "a")
+            href = link.get_attribute("href")
+            print(href)
+            pdf_links.append(href)
     
     # Close the browser
     driver.quit()
-    
-    # Create the target directory if it doesn't exist
-    output_dir = "election_pdfs"
-    os.makedirs(output_dir, exist_ok=True)
     
     for link in pdf_links:
         # Extract the year from the URL using regex
