@@ -21,18 +21,19 @@ def scrape_pdfs(url: str) -> None:
         raise ValueError("Invalid URL provided. Please enter a valid URL.")
     
     # Set up Chrome options
-    download_dir = "./data/election_pdfs"
     chrome_options = Options()
-    chrome_options.add_argument('--no-sandbox')
-    chrome_options.add_argument('--headless')
-    chrome_options.add_argument('--disable-dev-shm-usage')
-    chrome_options.binary_location = '/usr/bin/google-chrome'
-    # chrome_options.add_experimental_option("prefs", {
-    #     "download.default_directory": download_dir,
-    #     "download.prompt_for_download": False,
-    #     "download.directory_upgrade": True,
-    #     "plugins.always_open_pdf_externally": True
-    # })
+    download_dir = "../../data/scraped_pdfs"
+    chrome_options.add_experimental_option("prefs", {
+        "download.default_directory": download_dir,
+        "download.prompt_for_download": False,
+        "download.directory_upgrade": True,
+        "plugins.always_open_pdf_externally": True
+    })
+
+    from pathlib import Path
+
+    path_to_directory = Path(download_dir)
+    path_to_directory.mkdir(exist_ok=True)
     
     # Initialize the WebDriver
     driver = webdriver.Chrome(options=chrome_options)
@@ -55,16 +56,15 @@ def scrape_pdfs(url: str) -> None:
     
     for link in pdf_links:
         # Extract the year from the URL using regex
-        parsed_url = urlparse(link)
-        pdf_filename = os.path.basename(parsed_url.path)
-
-        filename = os.path.join("election_pdfs", pdf_filename)
-
+        match = re.search(r"/(\d{4})", link)
+        pdf_filename = f"{match.group(1)}.pdf" if match else "unnamed_file.pdf"
+        
         # Ensure unique filenames
+        filename = os.path.join(download_dir, pdf_filename)
         counter = 1
         while os.path.exists(filename):
             name, ext = os.path.splitext(pdf_filename)
-            filename = os.path.join("election_pdfs", f"{name}_{counter}{ext}")
+            filename = os.path.join(download_dir, f"{name}_{counter}{ext}")
             counter += 1
         
         # Download the PDF
@@ -77,3 +77,4 @@ def scrape_pdfs(url: str) -> None:
             print(f"Failed to download: {link}")
 
 scrape_pdfs("https://history.house.gov/Institution/Election-Statistics/Election-Statistics/")
+
