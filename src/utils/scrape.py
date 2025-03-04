@@ -6,6 +6,8 @@ import os
 import re
 from typing import List
 from urllib.parse import urlparse
+from pathlib import Path
+from .config import PDF_DIR, SCRAPE_CONFIG
 
 def scrape_pdfs(url: str) -> None:
     """
@@ -22,7 +24,8 @@ def scrape_pdfs(url: str) -> None:
     
     # Set up Chrome options
     chrome_options = Options()
-    download_dir = "../../data/scraped_pdfs"
+    download_dir = str(PDF_DIR)
+    chrome_options.add_argument("headless")
     chrome_options.add_experimental_option("prefs", {
         "download.default_directory": download_dir,
         "download.prompt_for_download": False,
@@ -30,10 +33,8 @@ def scrape_pdfs(url: str) -> None:
         "plugins.always_open_pdf_externally": True
     })
 
-    from pathlib import Path
-
-    path_to_directory = Path(download_dir)
-    path_to_directory.mkdir(exist_ok=True)
+    #Ensure the download directory exists
+    PDF_DIR.mkdir(exist_ok=True, parents=True)
     
     # Initialize the WebDriver
     driver = webdriver.Chrome(options=chrome_options)
@@ -60,11 +61,11 @@ def scrape_pdfs(url: str) -> None:
         pdf_filename = f"{match.group(1)}.pdf" if match else "unnamed_file.pdf"
         
         # Ensure unique filenames
-        filename = os.path.join(download_dir, pdf_filename)
+        filename = PDF_DIR / pdf_filename
         counter = 1
         while os.path.exists(filename):
             name, ext = os.path.splitext(pdf_filename)
-            filename = os.path.join(download_dir, f"{name}_{counter}{ext}")
+            filename = PDF_DIR / f"{name}_{counter}{ext}"
             counter += 1
         
         # Download the PDF
@@ -76,5 +77,6 @@ def scrape_pdfs(url: str) -> None:
         else:
             print(f"Failed to download: {link}")
 
-scrape_pdfs("https://history.house.gov/Institution/Election-Statistics/Election-Statistics/")
-
+if __name__ == "__main__":
+    # Scrape PDFs using the default URL from config
+    scrape_pdfs()
