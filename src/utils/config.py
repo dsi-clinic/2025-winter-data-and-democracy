@@ -28,6 +28,9 @@ for directory in [DATA_DIR, PDF_DIR, IMAGE_DIR, CSV_DIR]:
 # Claude API settings - get API key from environment variable
 ANTHROPIC_API_KEY = os.environ.get("ANTHROPIC_API_KEY")
 
+# URL for scraping
+SCRAPE_URL = "https://history.house.gov/Institution/Election-Statistics/Election-Statistics/"
+
 # Claude configuration
 CLAUDE_CONFIG = {
     "model_name": "claude-3-5-sonnet-20241022",
@@ -46,3 +49,15 @@ CSV_CONFIG = {
     "sort_columns": ["STATE", "CONGRESSIONAL_DISTRICT"],
     "skip_prefix": "sorted_"
 }
+
+def main():
+    """Setup function that ensures directories exist and environment is properly functioning"""
+    #Ensure directoires exist
+    for directory in (DATA_DIR, PDF_DIR, IMAGE_DIR, CSV_DIR):
+        directory.mkdir(parents=True, exist_ok=True)
+
+    #Return True if everything is set up correctly
+    return True
+
+if __name__ == "__main__":
+    main()

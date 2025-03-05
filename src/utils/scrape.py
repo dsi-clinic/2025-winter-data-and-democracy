@@ -7,7 +7,7 @@ import re
 from typing import List
 from urllib.parse import urlparse
 from pathlib import Path
-from .config import PDF_DIR, SCRAPE_CONFIG
+from config import PDF_DIR, SCRAPE_URL
 
 def scrape_pdfs(url: str) -> None:
     """
@@ -79,4 +79,4 @@ def scrape_pdfs(url: str) -> None:
 
 if __name__ == "__main__":
     # Scrape PDFs using the default URL from config
-    scrape_pdfs()
+    scrape_pdfs(SCRAPE_URL)
