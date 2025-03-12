@@ -12,4 +12,4 @@ This directory contains utility modules for the election data processing pipelin
 - `clean.py`: Module for processing and sorting CSV files
 - `prompts.py`: Module containing Claude API prompts for data extraction
 
-Each module can be run independently or as part of the full pipeline. See the main README.md for usage instructions.
+Each module can be run independently or as part of the full pipeline.
