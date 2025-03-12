@@ -4,6 +4,7 @@ import re
 from pathlib import Path
 from typing import Optional, Dict, List
 import anthropic
+import warnings
 
 from prompts import SYSTEM_PROMPT, USER_PROMPT, get_custom_prompt
 
@@ -24,12 +25,10 @@ def extract_election_data(
     
     Returns:
         Dict[str, Path]: Dictionary mapping folder names to their output CSV paths
-    
-    Raises:
-        ValueError: If the API key is not provided and not found in environment
-        FileNotFoundError: If input directory doesn't exist
-        PermissionError: If lacking permissions to read/write files
     """
+    # Suppress warnings that might interfere with client initialization
+    warnings.filterwarnings('ignore')
+    
     # Set up default paths based on project structure
     project_root = Path(__file__).resolve().parent.parent.parent
     
@@ -46,14 +45,19 @@ def extract_election_data(
     # Create output directory if it doesn't exist
     output_base.mkdir(parents=True, exist_ok=True)
     
-    # Initialize Anthropic client
-    if anthropic_api_key:
+    # Validate API key
+    if not anthropic_api_key:
+        anthropic_api_key = os.environ.get('ANTHROPIC_API_KEY')
+    
+    if not anthropic_api_key:
+        raise ValueError("No Anthropic API key provided. Set ANTHROPIC_API_KEY environment variable.")
+    
+    # Initialize Anthropic client with minimal arguments
+    try:
         client = anthropic.Anthropic(api_key=anthropic_api_key)
-    else:
-        try:
-            client = anthropic.Anthropic()
-        except Exception as e:
-            raise ValueError(f"Failed to initialize Anthropic client: {e}. Please provide an API key.")
+    except Exception as e:
+        print(f"Error initializing Anthropic client: {e}")
+        raise
     
     # Validate input directory
     if not input_base.exists():
