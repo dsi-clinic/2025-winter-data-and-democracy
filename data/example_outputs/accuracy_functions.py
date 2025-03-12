@@ -1,4 +1,4 @@
-="""accuracy_functions.py
+"""accuracy_functions.py
 
 Helper file of Python functions for measuring OCR accuracy on numeric and text fields.
 No environment management or IPython-specific code is included.
@@ -153,6 +153,7 @@ def evaluate_numeric_errors(df_true, df_pred, numeric_cols):
     """Compute MAE/MAPE for numeric cols, returning overall plus per-col stats."""
     overall_abs, overall_pct = [], []
     col_stats = {c: {"abs": [], "pct": []} for c in numeric_cols}
+
     for col in numeric_cols:
         for i in range(len(df_true)):
             try:
@@ -165,17 +166,22 @@ def evaluate_numeric_errors(df_true, df_pred, numeric_cols):
                     pct_err = abs_err / abs(tv)
                     col_stats[col]["pct"].append(pct_err)
                     overall_pct.append(pct_err)
-            except:
-                pass
-    # Summaries
-    results = {}
+            except Exception as e:
+                # Replace 'pass' with minimal log statement:
+                print(
+                    f"[WARNING] Could not parse numeric: col={col}, row={i}, error={e}"
+                )
+                continue
+
     mae_all = np.mean(overall_abs) if overall_abs else np.nan
     mape_all = np.mean(overall_pct) if overall_pct else np.nan
+
     per_col = {}
     for c in numeric_cols:
         ma = np.mean(col_stats[c]["abs"]) if col_stats[c]["abs"] else np.nan
         mp = np.mean(col_stats[c]["pct"]) if col_stats[c]["pct"] else np.nan
         per_col[c] = {"mae": ma, "mape": mp}
+
     return {
         "overall_mae": mae_all,
         "overall_mape": mape_all,

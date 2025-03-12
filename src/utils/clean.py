@@ -96,8 +96,13 @@ def process_csv_files(
             # Check for header rows in data (common issue in some CSV files)
             # If first row seems to contain column headers, drop it
             first_row = dataframe.iloc[0]
-            if any(str(val).upper() in [col.upper() for col in dataframe.columns] for val in first_row):
-                print(f"Possible header row found in data for {filename}, removing first row")
+            if any(
+                str(val).upper() in [col.upper() for col in dataframe.columns]
+                for val in first_row
+            ):
+                print(
+                    f"Possible header row found in data for {filename}, removing first row"
+                )
                 dataframe = dataframe.iloc[1:].reset_index(drop=True)
 
             # Ensure VOTES column is converted to numeric
@@ -119,11 +124,11 @@ def process_csv_files(
                 "YEAR_OF_ELECTION": "YEAR",
                 "ELECTION_YEAR": "YEAR",
             }
-            
+
             # Rename columns if variations exist
             for old_col, new_col in column_mapping.items():
                 if old_col in dataframe.columns and new_col not in dataframe.columns:
-                    dataframe.rename(columns={old_col: new_col}, inplace=True)
+                    dataframe.rename(columns={old_col: new_col})
 
             # Convert other relevant columns to appropriate types with better error handling
             type_conversions = {
@@ -135,48 +140,74 @@ def process_csv_files(
                 if col in dataframe.columns:
                     try:
                         # For numeric conversions, handle non-numeric values safely
-                        if dtype == int:
+                        if isinstance(dtype, int):
                             # Check for non-numeric values and report them
-                            non_numeric = ~dataframe[col].astype(str).str.replace(r'\D', '', regex=True).str.match(r'^\d*$')
+                            non_numeric = ~dataframe[col].astype(str).str.replace(
+                                r"\D", "", regex=True
+                            ).str.match(r"^\d*$")
                             if non_numeric.any():
-                                problematic_values = dataframe.loc[non_numeric, col].unique()
-                                print(f"Warning: Non-numeric values found in {col} column: {problematic_values}")
-                                
+                                problematic_values = dataframe.loc[
+                                    non_numeric, col
+                                ].unique()
+                                print(
+                                    f"Warning: Non-numeric values found in {col} column: {problematic_values}"
+                                )
+
                                 # Replace non-numeric values with NaN
                                 dataframe.loc[non_numeric, col] = pd.NA
-                            
+
                             # Convert to numeric and fill NaN values
-                            dataframe[col] = pd.to_numeric(dataframe[col], errors='coerce')
-                            
+                            dataframe[col] = pd.to_numeric(
+                                dataframe[col], errors="coerce"
+                            )
+
                             # For YEAR column, infer from filename if not available
                             if col == "YEAR" and dataframe[col].isna().any():
                                 try:
-                                    year_from_filename = int(filename.split('.')[0])
-                                    if 1900 <= year_from_filename <= 2100:  # Sanity check for valid year
-                                        print(f"Inferring missing YEAR values from filename: {year_from_filename}")
-                                        dataframe[col] = dataframe[col].fillna(year_from_filename)
+                                    year_from_filename = int(filename.split(".")[0])
+                                    MIN_YEAR = 1900
+                                    MAX_YEAR = 2100
+                                    if (
+                                        MIN_YEAR <= year_from_filename <= MAX_YEAR
+                                    ):  # Sanity check for valid year
+                                        print(
+                                            f"Inferring missing YEAR values from filename: {year_from_filename}"
+                                        )
+                                        dataframe[col] = dataframe[col].fillna(
+                                            year_from_filename
+                                        )
                                 except (ValueError, IndexError):
                                     pass
-                            
+
                             # Fill remaining NaN values with a default
                             if col == "YEAR":
                                 # Use median year if available, otherwise default to 0
                                 median_year = dataframe[col].median()
-                                default_value = median_year if not pd.isna(median_year) else 0
-                                dataframe[col] = dataframe[col].fillna(default_value).astype(dtype)
+                                default_value = (
+                                    median_year if not pd.isna(median_year) else 0
+                                )
+                                dataframe[col] = (
+                                    dataframe[col].fillna(default_value).astype(dtype)
+                                )
                         else:
                             dataframe[col] = dataframe[col].astype(dtype)
                     except Exception as type_error:
-                        print(f"Warning: Could not convert column {col} to {dtype.__name__} in {filename}: {type_error}")
+                        print(
+                            f"Warning: Could not convert column {col} to {dtype.__name__} in {filename}: {type_error}"
+                        )
                         # Continue processing without stopping for type conversion errors
 
             # Sort if possible
-            sort_cols_present = [col for col in sort_columns if col in dataframe.columns]
+            sort_cols_present = [
+                col for col in sort_columns if col in dataframe.columns
+            ]
             if sort_cols_present:
                 dataframe = dataframe.sort_values(by=sort_cols_present)
                 if len(sort_cols_present) < len(sort_columns):
                     missing_cols = set(sort_columns) - set(sort_cols_present)
-                    print(f"Warning: Missing sort columns in {filename}: {missing_cols}")
+                    print(
+                        f"Warning: Missing sort columns in {filename}: {missing_cols}"
+                    )
 
             # Save processed file
             dataframe.to_csv(output_file, index=False)
