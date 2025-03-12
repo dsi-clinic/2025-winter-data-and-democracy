@@ -13,6 +13,9 @@ from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.common.by import By
 
+# HTTP status code constants
+HTTP_OK = 200
+
 
 def scrape_pdfs(url: str) -> None:
     """Scrapes PDF links from a given website and downloads them to a local directory.
@@ -77,7 +80,7 @@ def scrape_pdfs(url: str) -> None:
 
         # Download the PDF
         response = requests.get(link, timeout=10)  # Added timeout for requests
-        if response.status_code == 200:
+        if response.status_code == HTTP_OK:
             with filename.open("wb") as file:  # Replaced open() with Path.open()
                 file.write(response.content)
             print(f"Downloaded: {filename}")
@@ -87,4 +90,4 @@ def scrape_pdfs(url: str) -> None:
 
 if __name__ == "__main__":
     # Scrape PDFs using the default URL from config
-    scrape_pdfs(SCRAPE_URL) 
+    scrape_pdfs(SCRAPE_URL)
