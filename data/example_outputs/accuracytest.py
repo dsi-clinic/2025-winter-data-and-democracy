@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
-"""
-test_accuracy.py
+"""test_accuracy.py
 
 A consolidated Python script that:
 1. Measures digit-level and text-based (Levenshtein) accuracy.
@@ -14,15 +13,15 @@ Example usage is in the `main()` function at the bottom.
 Author: Your Name
 """
 
-import pandas as pd
-import numpy as np
 import string
+
 import matplotlib.pyplot as plt
+import numpy as np
+import pandas as pd
 
 
 def levenshtein_distance(s1: str, s2: str) -> int:
-    """
-    Compute the Levenshtein edit distance between two strings s1 and s2.
+    """Compute the Levenshtein edit distance between two strings s1 and s2.
     The distance is the minimum number of single-character edits
     (insertions, deletions, substitutions) required to transform s1 into s2.
 
@@ -48,16 +47,15 @@ def levenshtein_distance(s1: str, s2: str) -> int:
         for j in range(1, cols):
             cost = 0 if s1[i - 1] == s2[j - 1] else 1
             dp[i][j] = min(
-                dp[i - 1][j] + 1,      # deletion
-                dp[i][j - 1] + 1,      # insertion
-                dp[i - 1][j - 1] + cost  # substitution
+                dp[i - 1][j] + 1,  # deletion
+                dp[i][j - 1] + 1,  # insertion
+                dp[i - 1][j - 1] + cost,  # substitution
             )
     return dp[-1][-1]
 
 
 def digit_level_accuracy(true_val, pred_val):
-    """
-    Compare two numeric values (or strings) digit by digit,
+    """Compare two numeric values (or strings) digit by digit,
     counting how many match exactly.
 
     :param true_val: Ground-truth numeric value or string.
@@ -78,12 +76,10 @@ def digit_level_accuracy(true_val, pred_val):
     return matched, total
 
 
-def evaluate_accuracy(df_true: pd.DataFrame,
-                      df_pred: pd.DataFrame,
-                      numeric_cols,
-                      text_cols) -> dict:
-    """
-    Measure overall digit-level accuracy for numeric columns
+def evaluate_accuracy(
+    df_true: pd.DataFrame, df_pred: pd.DataFrame, numeric_cols, text_cols
+) -> dict:
+    """Measure overall digit-level accuracy for numeric columns
     and average Levenshtein distance for text columns.
 
     :param df_true: Ground-truth DataFrame.
@@ -101,8 +97,9 @@ def evaluate_accuracy(df_true: pd.DataFrame,
     total_groundtruth_digits = 0
     for col in numeric_cols:
         for i in range(len(df_true)):
-            matched, total = digit_level_accuracy(df_true[col].iloc[i],
-                                                  df_pred[col].iloc[i])
+            matched, total = digit_level_accuracy(
+                df_true[col].iloc[i], df_pred[col].iloc[i]
+            )
             total_matched_digits += matched
             total_groundtruth_digits += total
 
@@ -127,13 +124,12 @@ def evaluate_accuracy(df_true: pd.DataFrame,
 
     return {
         "digit_level_accuracy": numeric_accuracy,
-        "avg_levenshtein_dist": avg_lev_dist
+        "avg_levenshtein_dist": avg_lev_dist,
     }
 
 
 def compare_digits_with_confusion(true_val, pred_val, confusion_matrix):
-    """
-    Compare two numeric values (or strings) digit by digit,
+    """Compare two numeric values (or strings) digit by digit,
     updating the confusion_matrix for digits 0-9.
 
     :param true_val: Ground-truth value.
@@ -163,11 +159,10 @@ def compare_digits_with_confusion(true_val, pred_val, confusion_matrix):
     return matched, total
 
 
-def evaluate_numeric_with_confusion(df_true: pd.DataFrame,
-                                    df_pred: pd.DataFrame,
-                                    numeric_cols) -> dict:
-    """
-    Builds a confusion matrix for digits (0-9) across specified numeric columns.
+def evaluate_numeric_with_confusion(
+    df_true: pd.DataFrame, df_pred: pd.DataFrame, numeric_cols
+) -> dict:
+    """Builds a confusion matrix for digits (0-9) across specified numeric columns.
     Computes an overall digit-level accuracy, and also provides per-column stats.
 
     :param df_true: Ground-truth DataFrame.
@@ -211,7 +206,7 @@ def evaluate_numeric_with_confusion(df_true: pd.DataFrame,
         col_acc = col_matched / col_total if col_total > 0 else 0.0
         per_column_stats[col] = {
             "digit_level_accuracy": col_acc,
-            "confusion_matrix": col_conf
+            "confusion_matrix": col_conf,
         }
 
         overall_matched += col_matched
@@ -222,13 +217,12 @@ def evaluate_numeric_with_confusion(df_true: pd.DataFrame,
     return {
         "digit_level_accuracy": overall_acc,
         "confusion_matrix": master_confusion,
-        "per_column": per_column_stats
+        "per_column": per_column_stats,
     }
 
 
 def analyze_digit_confusion(confusion_matrix: np.ndarray):
-    """
-    Print info about digit confusion: top confusions, etc.
+    """Print info about digit confusion: top confusions, etc.
 
     :param confusion_matrix: 10x10 array (rows=GT digit, cols=predicted digit).
     """
@@ -263,12 +257,10 @@ def analyze_digit_confusion(confusion_matrix: np.ndarray):
         print()
 
 
-def compare_chars_with_confusion(true_str: str,
-                                 pred_str: str,
-                                 confusion_matrix: np.ndarray,
-                                 char_list: str) -> None:
-    """
-    Compare two strings character by character, updating confusion_matrix
+def compare_chars_with_confusion(
+    true_str: str, pred_str: str, confusion_matrix: np.ndarray, char_list: str
+) -> None:
+    """Compare two strings character by character, updating confusion_matrix
     (size = len(char_list) x len(char_list)).
 
     :param true_str: Ground-truth text string.
@@ -289,12 +281,10 @@ def compare_chars_with_confusion(true_str: str,
             confusion_matrix[gt_idx, pd_idx] += 1
 
 
-def evaluate_text_with_char_confusion(df_true: pd.DataFrame,
-                                      df_pred: pd.DataFrame,
-                                      text_cols,
-                                      char_list: str) -> dict:
-    """
-    For each text column, build a character-level confusion matrix.
+def evaluate_text_with_char_confusion(
+    df_true: pd.DataFrame, df_pred: pd.DataFrame, text_cols, char_list: str
+) -> dict:
+    """For each text column, build a character-level confusion matrix.
     Also track exact string match rate per column.
 
     :param df_true: Ground-truth DataFrame.
@@ -328,7 +318,9 @@ def evaluate_text_with_char_confusion(df_true: pd.DataFrame,
             pred_str = str(df_pred[col].iloc[i])
 
             compare_chars_with_confusion(true_str, pred_str, col_conf, char_list)
-            compare_chars_with_confusion(true_str, pred_str, master_confusion, char_list)
+            compare_chars_with_confusion(
+                true_str, pred_str, master_confusion, char_list
+            )
 
             # Check exact match ignoring case/whitespace around edges
             if true_str.strip().lower() == pred_str.strip().lower():
@@ -338,25 +330,24 @@ def evaluate_text_with_char_confusion(df_true: pd.DataFrame,
 
         per_col_results[col] = {
             "char_confusion_matrix": col_conf,
-            "exact_match_rate": exact_rate
+            "exact_match_rate": exact_rate,
         }
 
-    return {
-        "per_column": per_col_results,
-        "master_char_confusion": master_confusion
-    }
+    return {"per_column": per_col_results, "master_char_confusion": master_confusion}
 
 
 def analyze_char_confusion(confusion_matrix: np.ndarray, char_list: str) -> None:
-    """
-    Print or interpret a character confusion matrix (rows=GT char, cols=Pred).
+    """Print or interpret a character confusion matrix (rows=GT char, cols=Pred).
 
     :param confusion_matrix: A 2D array of shape (len(char_list), len(char_list)).
     :param char_list: String or list of characters used in the confusion matrix.
     """
     row_sums = confusion_matrix.sum(axis=1)
 
-    print("Character Confusion Matrix (rows=GT, cols=Prediction). Shape:", confusion_matrix.shape)
+    print(
+        "Character Confusion Matrix (rows=GT, cols=Prediction). Shape:",
+        confusion_matrix.shape,
+    )
     print()
 
     for i, row_total in enumerate(row_sums):
@@ -385,18 +376,20 @@ def analyze_char_confusion(confusion_matrix: np.ndarray, char_list: str) -> None
         if second_pred_idx is not None:
             second_pred_char = char_list[second_pred_idx]
             if top_pred_char == gt_char:
-                print(f"  Second most predicted (possible confusion): '{second_pred_char}' (count={second_count})")
+                print(
+                    f"  Second most predicted (possible confusion): '{second_pred_char}' (count={second_count})"
+                )
             else:
-                print(f"  Second predicted: '{second_pred_char}' (count={second_count})")
+                print(
+                    f"  Second predicted: '{second_pred_char}' (count={second_count})"
+                )
         print()
 
 
-def evaluate_numeric_errors(df_true: pd.DataFrame,
-                            df_pred: pd.DataFrame,
-                            numeric_cols,
-                            debug=False) -> dict:
-    """
-    Computes Mean Absolute Error (MAE) and Mean Absolute Percentage Error (MAPE)
+def evaluate_numeric_errors(
+    df_true: pd.DataFrame, df_pred: pd.DataFrame, numeric_cols, debug=False
+) -> dict:
+    """Computes Mean Absolute Error (MAE) and Mean Absolute Percentage Error (MAPE)
     for the specified numeric_cols, both overall and per-column.
     Also returns absolute errors by column for optional plotting.
 
@@ -436,7 +429,9 @@ def evaluate_numeric_errors(df_true: pd.DataFrame,
                 true_num = float(str(true_val).replace(",", "").strip())
             except:
                 if debug:
-                    print(f"[DEBUG] Row {i}, col '{col}' -> Failed parse for true_val = {true_val!r}")
+                    print(
+                        f"[DEBUG] Row {i}, col '{col}' -> Failed parse for true_val = {true_val!r}"
+                    )
                 parse_fail_count[col] += 1
                 continue
 
@@ -444,13 +439,22 @@ def evaluate_numeric_errors(df_true: pd.DataFrame,
                 pred_num = float(str(pred_val).replace(",", "").strip())
             except:
                 if debug:
-                    print(f"[DEBUG] Row {i}, col '{col}' -> Failed parse for pred_val = {pred_val!r}")
+                    print(
+                        f"[DEBUG] Row {i}, col '{col}' -> Failed parse for pred_val = {pred_val!r}"
+                    )
                 parse_fail_count[col] += 1
                 continue
 
-            if np.isnan(true_num) or np.isnan(pred_num) or np.isinf(true_num) or np.isinf(pred_num):
+            if (
+                np.isnan(true_num)
+                or np.isnan(pred_num)
+                or np.isinf(true_num)
+                or np.isinf(pred_num)
+            ):
                 if debug:
-                    print(f"[DEBUG] Row {i}, col '{col}' -> NaN or inf found, skipping.")
+                    print(
+                        f"[DEBUG] Row {i}, col '{col}' -> NaN or inf found, skipping."
+                    )
                 continue
 
             parse_success_count[col] += 1
@@ -471,46 +475,44 @@ def evaluate_numeric_errors(df_true: pd.DataFrame,
         if len(col_abs_errors) > 0:
             col_mae = float(np.mean(col_abs_errors))
         else:
-            col_mae = float('nan')
+            col_mae = float("nan")
 
         if len(col_pct_errors) > 0:
             col_mape = float(np.mean(col_pct_errors))
         else:
-            col_mape = float('nan')
+            col_mape = float("nan")
 
-        per_column_stats[col] = {
-            "mae": col_mae,
-            "mape": col_mape
-        }
+        per_column_stats[col] = {"mae": col_mae, "mape": col_mape}
 
     # Overall
     if len(overall_abs_errors) > 0:
         overall_mae = float(np.mean(overall_abs_errors))
     else:
-        overall_mae = float('nan')
+        overall_mae = float("nan")
 
     if len(overall_pct_errors) > 0:
         overall_mape = float(np.mean(overall_pct_errors))
     else:
-        overall_mape = float('nan')
+        overall_mape = float("nan")
 
     if debug:
         print("\n[DEBUG] Parsing Summary:")
         for col in numeric_cols:
-            print(f"  {col}: parse_success={parse_success_count[col]}, parse_fail={parse_fail_count[col]}")
+            print(
+                f"  {col}: parse_success={parse_success_count[col]}, parse_fail={parse_fail_count[col]}"
+            )
         print()
 
     return {
         "overall_mae": overall_mae,
         "overall_mape": overall_mape,
         "per_column": per_column_stats,
-        "abs_errors_by_col": abs_errors_by_col
+        "abs_errors_by_col": abs_errors_by_col,
     }
 
 
 def plot_error_distribution(abs_errors_by_col: dict) -> None:
-    """
-    Plot histograms of absolute errors for each numeric column.
+    """Plot histograms of absolute errors for each numeric column.
 
     :param abs_errors_by_col: Dict { col_name: [list_of_abs_errors, ...], ... }
     """
@@ -524,7 +526,7 @@ def plot_error_distribution(abs_errors_by_col: dict) -> None:
         axes = [axes]
 
     for ax, (col, errors) in zip(axes, abs_errors_by_col.items()):
-        ax.hist(errors, bins=20, color='blue', alpha=0.7)
+        ax.hist(errors, bins=20, color="blue", alpha=0.7)
         ax.set_title(f"Absolute Error: {col}")
         ax.set_xlabel("Error")
         ax.set_ylabel("Frequency")
@@ -534,13 +536,11 @@ def plot_error_distribution(abs_errors_by_col: dict) -> None:
 
 
 def main():
-    """
-    Example main function to demonstrate usage of the above functions.
+    """Example main function to demonstrate usage of the above functions.
 
-    Adjust numeric_cols, text_cols, and file paths as needed. 
+    Adjust numeric_cols, text_cols, and file paths as needed.
     All paths are relative by default.
     """
-
     df_human_path = "1940human.csv"
     df_ai_path = "1940raw.csv"
 
@@ -566,7 +566,9 @@ def main():
 
     # 3) Text character confusion
     char_list = string.ascii_lowercase
-    txt_conf_res = evaluate_text_with_char_confusion(df_human, df_ai, text_columns, char_list)
+    txt_conf_res = evaluate_text_with_char_confusion(
+        df_human, df_ai, text_columns, char_list
+    )
     print("== Text Confusion ==")
     analyze_char_confusion(txt_conf_res["master_char_confusion"], char_list)
     for col, info in txt_conf_res["per_column"].items():

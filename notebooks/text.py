@@ -10,13 +10,8 @@ message = client.messages.create(
     messages=[
         {
             "role": "user",
-            "content": [
-                {
-                    "type": "text",
-                    "text": "Why is the ocean salty?"
-                }
-            ]
+            "content": [{"type": "text", "text": "Why is the ocean salty?"}],
         }
-    ]
+    ],
 )
 print(message.content)
