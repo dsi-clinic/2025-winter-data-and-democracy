@@ -1,6 +1,5 @@
+"""This module provides functionality to process CSV files in batch.
 
-"""
-This module provides functionality to process CSV files in batch.
 It reads CSV files, cleans their data, sorts them by specified columns,
 and saves the cleaned files to a designated output folder.
 
@@ -19,7 +18,7 @@ import pandas as pd
 def process_csv_files(
     input_folder: Path | None = None,
     output_folder: Path | None = None,
-    sort_columns: list[str] = [],
+    sort_columns: list[str] = None,
     skip_prefix: str = "sorted_",
 ) -> tuple[list[str], list[str]]:
     """Batch process CSV files with optional sorting and cleaning.
@@ -43,6 +42,10 @@ def process_csv_files(
         - Preserves all data even if sorting columns aren't present
         - Skips files starting with skip_prefix
     """
+    # Initialize sort_columns as empty list if None
+    if sort_columns is None:
+        sort_columns = []
+
     # Set default paths based on project structure
     project_root = Path(__file__).resolve().parent.parent.parent
 
