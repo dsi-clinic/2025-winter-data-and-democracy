@@ -1,5 +1,3 @@
-I'll add the requested information about the `transform_image.py` script and testing data to your Data Folder Documentation:
-
 # Data Folder Documentation
 ## Election Data PDF Files
 This folder is intended to store election data PDF files retrieved from the U.S. House of Representatives' Office of the Clerk historical election statistics page.
@@ -50,7 +48,7 @@ The script will:
 4. These images are used for OCR processing in later pipeline stages
 
 ## Testing Data
-This folder also contains testing data used for accuracy statistics and validation:
+This folder also contains testing data used for accuracy statistics and validation in example_outputs:
 
 - A subset of manually annotated election data pages
 - Ground truth CSV files for comparing OCR results
