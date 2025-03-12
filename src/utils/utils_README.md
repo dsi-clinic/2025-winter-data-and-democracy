@@ -13,3 +13,10 @@ This directory contains utility modules for the election data processing pipelin
 - `prompts.py`: Module containing Claude API prompts for data extraction
 
 Each module can be run independently or as part of the full pipeline.
+
+## Environment Setup
+
+This application requires an Anthropic API key. Before running the Docker container, set the ANTHROPIC_API_KEY environment variable:
+
+```bash
+export ANTHROPIC_API_KEY=your_api_key_here
