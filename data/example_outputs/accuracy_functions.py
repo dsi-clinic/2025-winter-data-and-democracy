@@ -1,5 +1,4 @@
-#!/usr/bin/env python3
-"""accuracy_functions.py
+="""accuracy_functions.py
 
 Helper file of Python functions for measuring OCR accuracy on numeric and text fields.
 No environment management or IPython-specific code is included.

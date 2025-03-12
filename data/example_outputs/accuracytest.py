@@ -10,7 +10,7 @@ A consolidated Python script that:
 All functions have docstrings explaining their purpose.
 Example usage is in the `main()` function at the bottom.
 
-Author: Your Name
+Author: Jacob Chui
 """
 
 import string
