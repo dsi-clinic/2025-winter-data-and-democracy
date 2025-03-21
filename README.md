@@ -6,37 +6,28 @@ US historical election results can be found in a set of PDF documents [at this l
 
 The purpose of this project is to test modern tools on this data to create a comprehensive results repository. Specifically we wish to test Claude and OpenAI's APIs on this image data to build a dataset. If there are other API based systems for testing than they can be added to the list.
 
-## Project Goals
+## Project Goals Spring 2025
 
 The following are project goals:
-1. Write code which analyzes, parses and OCRs the images from the 1920-1998. This should 
-2. Once the images are in table format, checking should be done to verify that integrity of the data. Specifically:
-   1. There are totals in many of the datasets. These can be used as checksums to verify the scanning was accurate.
-   2. Numbers should also have guardrails on them. For example, all vote totals should be integers. 
-   3. Other tests and checks should be developed by the group working on this project.
-3. The outcome should be a set of _standard_ csv files. The data definition of this should look something like:
 
-```sql
-state char(2),
-year int,
-race_type varchar(12),
-congressional_district int,
-candidate_name varchar(100),
-candidate_party varchar(100),
-votes int
-```
-
-Where `race_type` should be Senate, HR or Presidential (if there are others listed they should be included). `congressional_district` should only exist when appropriate. Note that there may need to be additional information added to the schema, the purpose of this is to give you a sense of what the schema should roughly look lke.
-
-4. Finally the scripts need to run from top-to-bottom to generate the results. This should _not_ be a set of jupyter notebooks, but a set of python scripts.
-
-## Tasks for the first week
-
-To complete this task we will need a few different pieces of code:
-
-1. Python functions which download the pdf files and put them into a temp directory (such as /data/temp). Note that they should _not_ be committed into the repo as they are quite large, they should be downloaded
-2. Read over the PDF documents.
-3. Become familiar with the claude API and figure out how to send images to it. You have a claude API key in the slack channel (this should _NOT_ be committed to the repo. If the API Key ends up in the repo it will negatively impact your entire team's grade).
+1. Building on the work from last quarter there are three priorites:
+   1. The [open elections project](http://openelections.net/) contains information about historical election results. We want to add our results for our elections to this repository.
+   2. Read over their guidelines for contributing and put together a plan for how our data has to be changed to be committed.
+   3. Add some "connection" code which creates a set of specific CSV files that conform to the speficiations they require.
+   4. Each team member identify 2 statues that they will manage individiually. Make sure that the states chosen are relatively active github repos on the web page.
+   5. Using the connection code generate data and follow the open elections instructions for how to contribute, making sure to be professional in your communication and following their process step-by-step. **Note that this is being done under _your personal_ github, so if you behave poorly it will follow your account**.
+   6. Approval can take some time, so once multiple states have been approved, continue until all states and data are completed.
+2. Build a Jekyll github pages website for this data. This needs to have the following:
+   1. Automated github action pipeline for creating the github page on any push to `main` branch.
+   2. This should be a professional looking web page
+   3. There should be links to the data in a "data" section
+   4. There should be a well-written description of the code and how it works.
+   5. There should be an "about" page which has information on everyone (including people from last quarter) who have contributed. Make sure to only include information that you are comfortable sharing.
+3. Update this readme. This is going to be a public web site so _every_ piece of code, _every_ readme, etc. needs to be well written, up-to-date and appropriate.
+   1. This includes removing things like references to the "quarter's to do list", etc.
+   2. Make sure that everything runs via docker and the docker commands are up to date.
+3. Redo the anaysis using openAI or another paid API to verify the quality of the results.
+   1. If there is time, create a parallel data pipeline that uses another API to validate the results of Claude's OCR.
 
 ## Usage
 
@@ -59,7 +50,6 @@ If you prefer to develop inside a container with VS Code then do the following s
 1. Open the repository in VS Code
 2. At the bottom right a window may appear that says `Folder contains a Dev Container configuration file...`. If it does, select, `Reopen in Container` and you are done. Otherwise proceed to next step. 
 3. Click the blue or green rectangle in the bottom left of VS code (should say something like `><` or `>< WSL`). Options should appear in the top center of your screen. Select `Reopen in Container`.
-
 
 
 
