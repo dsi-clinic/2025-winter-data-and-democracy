@@ -1,5 +1,8 @@
 # 2025-winter-data-and-democracy
 
+## Group Member Name and Email 
+Klaudia Barbarossa kbarbarossa@uchicago.edu 
+
 ## Project Background
 
 US historical election results can be found in a set of PDF documents [at this link](https://history.house.gov/Institution/Election-Statistics/Election-Statistics/) though there is no comprehensive results repository in a machine readable format.
