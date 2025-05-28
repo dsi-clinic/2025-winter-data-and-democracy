@@ -46,10 +46,10 @@ layout = html.Div(
         html.P("Key parameters used in LLM processing:"),
         html.Ul(
             [
-                html.Li(html.Strong("System: ") + "Provides context and instructions to Claude"),
-                html.Li(html.Strong("Temperature: ") + "Set to 0 for consistent, deterministic output"),
-                html.Li(html.Strong("Max tokens: ") + "Controls the length of Claude's output"),
-                html.Li(html.Strong("Model: ") + "Claude was selected after comparative testing"),
+                html.Li([html.Strong("System: "), "Provides context and instructions to Claude"]),
+                html.Li([html.Strong("Temperature: "), "Set to 0 for consistent, deterministic output"]),
+                html.Li([html.Strong("Max tokens: "), "Controls the length of Claude's output"]),
+                html.Li([html.Strong("Model: "), "Claude was selected after comparative testing"]),
             ]
         ),
 
