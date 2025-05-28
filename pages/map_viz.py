@@ -6,10 +6,7 @@ from typing import Literal
 
 import pandas as pd
 import plotly.express as px
-from dash import Dash, Input, Output, dcc, html
-
-app = Dash(__name__)
-server = app.server
+from dash import dcc, html
 
 DATA_DIR = "output/csv"
 
@@ -42,6 +39,8 @@ party_color_map = {
     "OTHER": "lightgray",
 }
 
+# Keep all your existing functions: load_cleaned_data, process_majority_party
+# (I'm not repeating them here to save space, but keep them exactly as they are)
 
 def load_cleaned_data(file_path: str) -> pd.DataFrame:
     """Load CSV file while skipping malformed lines and headers."""
@@ -88,9 +87,7 @@ def load_cleaned_data(file_path: str) -> pd.DataFrame:
                 header_found = True
                 break
             # If no header keywords found but has enough columns, assume it's data
-            elif (
-                non_null_count == EXPECTED_COLUMNS and i < MAX_HEADER_CHECK_ROWS
-            ):  # Only check first few rows
+            elif non_null_count == EXPECTED_COLUMNS and i < MAX_HEADER_CHECK_ROWS:  # Only check first few rows
                 election_data.columns = [
                     "STATE",
                     "YEAR",
@@ -163,16 +160,7 @@ def process_majority_party(
     race_type: Literal["HOUSE", "SENATE", "PRESIDENTIAL"],
     show_margin: bool = False,
 ) -> px.choropleth:
-    """Process election data to create choropleth map showing majority party by state.
-
-    Args:
-        file_path: Path to the CSV file containing election data
-        race_type: Type of race (HOUSE, SENATE, or PRESIDENTIAL)
-        show_margin: Whether to show margin of victory instead of party colors
-
-    Returns:
-        Plotly choropleth figure showing majority party or margin by state
-    """
+    """Process election data to create choropleth map showing majority party by state."""
     election_data = load_cleaned_data(file_path)
     if election_data.empty:
         return px.choropleth(title="No usable data found")
@@ -350,7 +338,8 @@ def process_majority_party(
     return fig
 
 
-app.layout = html.Div(
+# Layout for the map visualization page
+layout = html.Div(
     [
         html.H1("US Elections: Majority Party by State"),
         dcc.Dropdown(
@@ -379,23 +368,8 @@ app.layout = html.Div(
 )
 
 
-@app.callback(
-    Output("choropleth-map", "figure"),
-    Input("year-dropdown", "value"),
-    Input("race-tabs", "value"),
-    Input("margin-toggle", "value"),
-)
 def update_map(year: int, race: str, margin_toggle: list[str]) -> px.choropleth:
-    """Update the choropleth map based on selected year, race type, and margin toggle.
-
-    Args:
-        year: Selected year for election data
-        race: Selected race type (HOUSE, SENATE, or PRESIDENTIAL)
-        margin_toggle: List containing 'SHOW_MARGIN' if margin view is enabled
-
-    Returns:
-        Updated plotly choropleth figure for the map
-    """
+    """Update the choropleth map based on selected year, race type, and margin toggle."""
     file_path = Path(DATA_DIR) / f"{year}.csv"
     if not file_path.exists():
         return px.choropleth(title=f"No data file found for {year}")
@@ -403,7 +377,3 @@ def update_map(year: int, race: str, margin_toggle: list[str]) -> px.choropleth:
     return process_majority_party(
         str(file_path), race, show_margin="SHOW_MARGIN" in margin_toggle
     )
-
-
-if __name__ == "__main__":
-    app.run(debug=True, host="0.0.0.0", port=8050)
