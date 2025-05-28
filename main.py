@@ -1,6 +1,6 @@
 from dash import Dash, dcc, html, Input, Output
 import dash_bootstrap_components as dbc
-
+import os
 # Import page layouts
 from pages.home import layout as home_layout
 from pages.about import layout as about_layout
@@ -53,7 +53,9 @@ def create_app():
 
 def main():
     app = create_app()
-    app.run(debug=True)
+    port = int(os.environ.get("PORT", 8050))
+    app.run(debug=True, host="0.0.0.0", port=port)
+
 
 if __name__ == "__main__":
     main()
