@@ -82,6 +82,57 @@ def create_bar_chart():
         print("Please ensure the 1932.csv file is in the correct location.")
 
 
+def create_dash_layout():
+    """Create Dash layout component for the bar chart page."""
+    import dash
+    from dash import dcc, html
+    import plotly.graph_objects as go
+    
+    try:
+        election_data = load_election_data()
+        
+        # Aggregate total votes by state and party
+        grouped = election_data.groupby(["state", "party"], as_index=False)["votes"].sum()
+        
+        # Create the figure
+        fig = px.bar(
+            grouped,
+            x="state",
+            y="votes",
+            color="party",
+            title="1932 Election: Party Vote Share by State",
+            labels={"votes": "Total Votes"},
+        )
+        fig.update_layout(barmode="stack", xaxis_title="State", yaxis_title="Total Votes")
+        
+        # Return Dash layout
+        return html.Div([
+            html.H1("1932 Election Results", className="text-center mb-4"),
+            dcc.Graph(
+                id="election-bar-chart",
+                figure=fig,
+                style={"height": "600px"}
+            ),
+            html.P(
+                f"Data loaded: {len(election_data)} records processed",
+                className="text-muted text-center"
+            )
+        ])
+        
+    except FileNotFoundError as e:
+        return html.Div([
+            html.H1("Data Loading Error", className="text-center mb-4"),
+            html.Div([
+                html.P(f"❌ Error: {e}", className="alert alert-danger"),
+                html.P("Please ensure the 1932.csv file is in the correct location.", 
+                       className="text-muted")
+            ])
+        ])
+
+
+# Create the layout that main.py expects
+layout = create_dash_layout()
+
 # Only run if this file is executed directly
 if __name__ == "__main__":
     create_bar_chart()
