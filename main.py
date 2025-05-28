@@ -53,7 +53,7 @@ def create_app():
 
 def main():
     app = create_app()
-    app.run_server(debug=True)
+    app.run(debug=True)
 
 if __name__ == "__main__":
     main()

@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Election Results Explorer</title>
+  <style>
+    body { font-family: Arial, sans-serif; max-width: 800px; margin: 40px auto; }
+    h1 { text-align: center; }
+    select, button { font-size: 16px; margin-top: 10px; }
+    table { border-collapse: collapse; margin-top: 20px; width: 100%; }
+    th, td { border: 1px solid #ddd; padding: 8px; }
+    th { background-color: #f2f2f2; }
+  </style>
+</head>
+<body>
+  <h1>Election Results Explorer</h1>
+  <p>Select a year to view a preview or download the full CSV file.</p>
+
+  <label for="year-select">Election Year:</label>
+  <select id="year-select">
+    <option value="">-- Select a year --</option>
+    <option value="1920">1920</option>
+    <option value="1922">1922</option>
+    <option value="1924">1924</option>
+    <!-- Add more years as needed -->
+  </select>
+
+  <div id="links" style="display:none;">
+    <p>
+      👉 <a id="preview-link" href="" target="_blank">Preview 100 rows</a><br>
+      📥 <a id="download-link" href="" target="_blank">Download full CSV</a>
+    </p>
+  </div>
+
+  <script>
+    const basePath = "csv_previews";  // Folder with pre-generated HTML previews
+    const rawCSVBase = "https://raw.githubusercontent.com/dsi-clinic/2025-winter-data-and-democracy/main/output/csv";
+
+    document.getElementById("year-select").addEventListener("change", function() {
+      const year = this.value;
+      const linksDiv = document.getElementById("links");
+
+      if (year) {
+        document.getElementById("preview-link").href = `${basePath}/${year}.html`;
+        document.getElementById("download-link").href = `${rawCSVBase}/${year}.csv`;
+        linksDiv.style.display = "block";
+      } else {
+        linksDiv.style.display = "none";
+      }
+    });
+  </script>
+</body>
+</html>
