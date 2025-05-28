@@ -17,12 +17,13 @@ The following are project goals:
    4. Each team member identify 2 statues that they will manage individiually. Make sure that the states chosen are relatively active github repos on the web page.
    5. Using the connection code generate data and follow the open elections instructions for how to contribute, making sure to be professional in your communication and following their process step-by-step. **Note that this is being done under _your personal_ github, so if you behave poorly it will follow your account**.
    6. Approval can take some time, so once multiple states have been approved, continue until all states and data are completed.
-2. Build a Jekyll github pages website for this data. This needs to have the following:
+2. Build a dash pags website for this data. This needs to have the following:
    1. Automated github action pipeline for creating the github page on any push to `main` branch.
    2. This should be a professional looking web page
    3. There should be links to the data in a "data" section
    4. There should be a well-written description of the code and how it works.
    5. There should be an "about" page which has information on everyone (including people from last quarter) who have contributed. Make sure to only include information that you are comfortable sharing.
+   6. Currently, the website is being hosted on Render and is available at: https://two025-data-and-democracy.onrender.com/
 3. Update this readme. This is going to be a public web site so _every_ piece of code, _every_ readme, etc. needs to be well written, up-to-date and appropriate.
    1. This includes removing things like references to the "quarter's to do list", etc.
    2. Make sure that everything runs via docker and the docker commands are up to date.

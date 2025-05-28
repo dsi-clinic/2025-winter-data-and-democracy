@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1"><!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>About | Data and Democracy</title>
+<meta name="generator" content="Jekyll v4.4.1" />
+<meta property="og:title" content="About" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="US Historical Election Results Repository" />
+<meta property="og:description" content="US Historical Election Results Repository" />
+<link rel="canonical" href="http://localhost:4000/2025-winter-data-and-democracy/about/" />
+<meta property="og:url" content="http://localhost:4000/2025-winter-data-and-democracy/about/" />
+<meta property="og:site_name" content="Data and Democracy" />
+<meta property="og:type" content="website" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="About" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"WebSite","description":"US Historical Election Results Repository","headline":"About","name":"Data and Democracy","url":"http://localhost:4000/2025-winter-data-and-democracy/about/"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="stylesheet" href="/2025-winter-data-and-democracy/assets/main.css"><link type="application/atom+xml" rel="alternate" href="http://localhost:4000/2025-winter-data-and-democracy/feed.xml" title="Data and Democracy" /></head>
+<body><header class="site-header" role="banner">
+
+  <div class="wrapper"><a class="site-title" rel="author" href="/2025-winter-data-and-democracy/">Data and Democracy</a><nav class="site-nav">
+        <input type="checkbox" id="nav-trigger" class="nav-trigger" />
+        <label for="nav-trigger">
+          <span class="menu-icon">
+            <svg viewBox="0 0 18 15" width="18px" height="15px">
+              <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"/>
+            </svg>
+          </span>
+        </label>
+
+        <div class="trigger"><a class="page-link" href="/2025-winter-data-and-democracy/about/">About</a><a class="page-link" href="/2025-winter-data-and-democracy/data/">Data</a><a class="page-link" href="/2025-winter-data-and-democracy/">Home</a><a class="page-link" href="/2025-winter-data-and-democracy/docs/pages/">Election Results Explorer</a></div>
+      </nav></div>
+</header>
+<main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <article class="post">
+
+  <header class="post-header">
+    <h1 class="post-title">About</h1>
+  </header>
+
+  <div class="post-content">
+    <h1 id="about-the-project">About the Project</h1>
+<p>Project Overview:</p>
+
+<p>The University of Chicago Data Science Institute’s Data &amp; Democracy team addressed a longstanding gap in election research by creating a comprehensive, machine-readable archive of U.S. election results from 1920 through 1996. Faced with 51 bulky PDFs containing over 3,000 pages of scanned precinct-level returns for House, Senate, and Presidential contests, we devised a three-stage OCR pipeline centered on the Claude API. This archive is important because it unlocks decades of electoral history that were previously inaccessible for large-scale quantitative analysis—enabling researchers to trace long-term voting patterns, study shifts in party support, and evaluate the evolution of democratic participation across states.</p>
+
+<h2 id="methodology">Methodology</h2>
+
+<p>At the core of our solution is a three-stage pipeline:</p>
+
+<p>PDF to Images: We batch-converted 51 state PDFs (over 3,000 pages!) into ordered image sequences, ensuring each race, precinct, and contest appears in the correct reading order.</p>
+
+<p>Prompted OCR Extraction: Every image is fed to Claude with carefully engineered prompts. Our system prompt establishes context (e.g. “Ignore table borders; extract STATE, YEAR, RACE_TYPE, DISTRICT, CANDIDATE, PARTY, VOTES”), while parameters like temperature and max tokens are tuned to balance fidelity against hallucination.</p>
+
+<p>Validation &amp; CSV Generation: Claude’s raw output is post-processed with two custom validators: a character-level edit-distance check for text fields (to tolerate minor punctuation or spacing variations) and a digit-accuracy metric that measures the fraction of correctly recognized digits in numeric vote counts. Cleaned records are assembled into per-year CSV files that align with our target schema for downstream analysis.</p>
+
+<p>To optimize accuracy, we constructed training/test datasets by manually labeling a subset of pages and comparing them against Claude’s outputs. We iteratively refined our system prompts—altering instructions to ignore extraneous table elements, adjusting model versions, and calibrating hyperparameters—until we reached our target thresholds for both text and numeric fields. We achieved outstanding accuracy—100 percent in state, race type, district, and party; 94 percent in candidate names; and 98 percent in vote totals. The result is a standardized set of per-state, per-year CSV files that conform to a unified schema, unlocking decades of electoral history for researchers, journalists, and civic technologists.</p>
+
+<p>Final Deliverables
+Professional Jekyll‐Based Website (GitHub Pages)
+Automated via GitHub Actions to rebuild and deploy on every push to main.
+Data Section
+Direct links to all per‐state, per‐year CSV downloads, organized by election cycle.
+Code &amp; Methodology Page
+Clear documentation of our OCR pipeline steps, prompt structures, and validation strategies.
+About Page
+Profiles of team members and contributors, limited to publicly approved information.</p>
+
+<p>This turnkey solution not only makes a century of U.S. election data easily accessible but also demonstrates a reproducible architecture for future archival digitization projects.</p>
+
+<h2 id="contributors">Contributors</h2>
+
+<p>This project was started in Winter 2025 by the following team:</p>
+
+<p>Mentor: Francesco Colapinto (DSI Post-doc)
+TA: Harper Schawb (Data Science and Human Rights, 2025)
+Students: Sally North (Economics, Statistics, and Data Science, 2025), Jacob Chui (Economics and Data Science, 2025), and Lisa Raj Singh (Sociology and Data Science, 2025)</p>
+
+<p>In Spring 2025, the team was joined by:
+Mentor: Julia Mendelsohn (DSI Post-doc)
+Student: Klaudia Barbarossa (Economics and Data Science, 2026)</p>
+
+<p>The University of Chicago Data Science Clinic is run by Tim Hannifan and Nick Ross. The students listed above worked on this project to fulfill the two quarter clinic requirement of the Data Science Major.</p>
+
+<p><a href="https://github.com/dsi-clinic/2025-winter-data-and-democracy">View our code on GitHub</a></p>
+
+  </div>
+
+</article>
+
+      </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/2025-winter-data-and-democracy/"></data>
+
+  <div class="wrapper">
+
+    <h2 class="footer-heading">Data and Democracy</h2>
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col footer-col-1">
+        <ul class="contact-list">
+          <li class="p-name">Data and Democracy</li></ul>
+      </div>
+
+      <div class="footer-col footer-col-2"><ul class="social-media-list"></ul>
+</div>
+
+      <div class="footer-col footer-col-3">
+        <p>US Historical Election Results Repository</p>
+      </div>
+    </div>
+
+  </div>
+
+</footer>
+</body>
+
+</html>
