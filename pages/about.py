@@ -7,12 +7,13 @@ layout = html.Div(
     children=[
         html.H2("About the Project", style={"fontWeight": "bold"}),
         html.P(
-            "Currently, there is no comprehensive results repository in a machine readable format."
+            "Currently, there is no comprehensive election results repository in a machine readable format. Much of this data is contained in scanned PDF files."
         ),
         html.P(
-            "The purpose of this project is to test modern tools on this data to create a comprehensive results repository. "
-            "Specifically we wish to test Claude and OpenAI's APIs on this image data to build a dataset that can be contributed to the "
+            "The purpose of this project is to test modern tools, specifically Large Language Models (LLMs), on this data to create a comprehensive results repository. "
+            "Specifically we wish to test Claude and OpenAI's APIs on these PDFs to build a dataset in CSV form that can be contributed to the "
             "OpenElections repositories."
+            "The goal of OpenElections is to create the first free, comprehensive, standardized, linked set of election data for the United States, including federal and statewide offices. We believe that we can contribute federal level data to their project."
         ),
         html.H3("Contributors", style={"marginTop": "30px"}),
         html.P("This project was started in Winter 2025 by the following team:"),
