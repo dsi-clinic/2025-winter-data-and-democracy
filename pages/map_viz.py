@@ -42,6 +42,7 @@ party_color_map = {
 # Keep all your existing functions: load_cleaned_data, process_majority_party
 # (I'm not repeating them here to save space, but keep them exactly as they are)
 
+
 def load_cleaned_data(file_path: str) -> pd.DataFrame:
     """Load CSV file while skipping malformed lines and headers."""
     try:
@@ -87,7 +88,9 @@ def load_cleaned_data(file_path: str) -> pd.DataFrame:
                 header_found = True
                 break
             # If no header keywords found but has enough columns, assume it's data
-            elif non_null_count == EXPECTED_COLUMNS and i < MAX_HEADER_CHECK_ROWS:  # Only check first few rows
+            elif (
+                non_null_count == EXPECTED_COLUMNS and i < MAX_HEADER_CHECK_ROWS
+            ):  # Only check first few rows
                 election_data.columns = [
                     "STATE",
                     "YEAR",
