@@ -23,7 +23,7 @@ The following are project goals:
    3. There should be links to the data in a "data" section
    4. There should be a well-written description of the code and how it works.
    5. There should be an "about" page which has information on everyone (including people from last quarter) who have contributed. Make sure to only include information that you are comfortable sharing.
-   6. Currently, the website is being hosted on Render and is available at: https://two025-winter-data-and-democracy.onrender.com/
+   6. Currently, the website is being hosted on Render and is available at: https://two025-data-and-democracy.onrender.com/
 3. Update this readme. This is going to be a public web site so _every_ piece of code, _every_ readme, etc. needs to be well written, up-to-date and appropriate.
    1. This includes removing things like references to the "quarter's to do list", etc.
    2. Make sure that everything runs via docker and the docker commands are up to date.
