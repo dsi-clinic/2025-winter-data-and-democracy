@@ -1,13 +1,20 @@
-from dash import Dash, dcc, html, Input, Output
-import dash_bootstrap_components as dbc
+"""Main application module for the Data & Democracy 2025 web application."""
+
 import os
-# Import page layouts
-from pages.home import layout as home_layout
+
+import dash_bootstrap_components as dbc
+from dash import Dash, Input, Output, dcc, html
+
 from pages.about import layout as about_layout
 from pages.data import layout as data_layout
 from pages.data_viewer import layout as data_viewer_layout
 
+# Import page layouts
+from pages.home import layout as home_layout
+
+
 def create_app():
+    """Create and configure the Dash application with navigation and routing."""
     app = Dash(
         __name__,
         suppress_callback_exceptions=True,
@@ -19,7 +26,11 @@ def create_app():
             dbc.NavItem(dbc.NavLink("Home", href="/", style={"color": "black"})),
             dbc.NavItem(dbc.NavLink("About", href="/about", style={"color": "black"})),
             dbc.NavItem(dbc.NavLink("Data", href="/data", style={"color": "black"})),
-            dbc.NavItem(dbc.NavLink("Data Viewer", href="/data-viewer", style={"color": "black"})),
+            dbc.NavItem(
+                dbc.NavLink(
+                    "Data Viewer", href="/data-viewer", style={"color": "black"}
+                )
+            ),
         ],
         brand="Data & Democracy 2025",
         brand_href="/",
@@ -31,10 +42,7 @@ def create_app():
         },
     )
 
-    app.layout = html.Div([
-        dcc.Location(id="url"),
-        html.Div(id="page-content")
-    ])
+    app.layout = html.Div([dcc.Location(id="url"), html.Div(id="page-content")])
 
     @app.callback(Output("page-content", "children"), Input("url", "pathname"))
     def display_page(pathname):
@@ -47,14 +55,18 @@ def create_app():
         elif pathname == "/data-viewer":
             return html.Div([navbar, data_viewer_layout])
         else:
-            return html.Div([navbar, html.H2("404 - Page Not Found", className="text-center mt-5")])
+            return html.Div(
+                [navbar, html.H2("404 - Page Not Found", className="text-center mt-5")]
+            )
 
     return app
 
+
 def main():
+    """Run the application with specified host and port configuration."""
     app = create_app()
     port = int(os.environ.get("PORT", 8050))
-    app.run(debug=True, host="0.0.0.0", port=port)
+    app.run(debug=True, host="127.0.0.1", port=port)
 
 
 if __name__ == "__main__":

@@ -1,5 +1,7 @@
-from dash import html, dcc
+"""Home page layout for the Data & Democracy 2025 application."""
+
 import dash_bootstrap_components as dbc
+from dash import dcc, html
 
 layout = html.Div(
     style={
@@ -25,18 +27,20 @@ layout = html.Div(
             [
                 dcc.Link(
                     dbc.Button("Explore About Page", color="primary", className="m-2"),
-                    href="/about"
+                    href="/about",
                 ),
                 dcc.Link(
-                    dbc.Button("View Processed Data", color="secondary", className="m-2"),
-                    href="/data"
+                    dbc.Button(
+                        "View Processed Data", color="secondary", className="m-2"
+                    ),
+                    href="/data",
                 ),
                 dcc.Link(
                     dbc.Button("Open Data Viewer", color="info", className="m-2"),
-                    href="/data-viewer"
+                    href="/data-viewer",
                 ),
             ],
             style={"marginTop": "30px"},
-        )
-    ]
+        ),
+    ],
 )
