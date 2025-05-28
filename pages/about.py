@@ -46,7 +46,7 @@ layout = html.Div(
             "The University of Chicago Data Science Clinic is run by Tim Hannifan and Nick Ross. "
             "The students listed above worked on this project to fulfill the two-quarter clinic requirement of the Data Science Major."
         ),
-        html.H3("Methodology", style={"marginTop": "30px"}),
+        html.H3("Code", style={"marginTop": "30px"}),
         html.P("View our code on "),
         html.A(
             "GitHub",
